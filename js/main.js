@@ -7,17 +7,35 @@ function validarFormulario (event) {
     let ciudad = $form.ciudad.value;
     let descripcionRegalo = $form['descripcion-regalo'].value;
 
-    validarNombre(nombre);
-    validarCiudad(ciudad);
-    validarDescripcionRegalo(descripcionRegalo)
-    console.log(validarNombre(nombre), validarCiudad(ciudad), validarDescripcionRegalo(descripcionRegalo))
+    const $errorNombre = validarNombre(nombre);
+    const $errorCiudad = validarCiudad(ciudad);
+    const $errorDescripcionRegalo = validarDescripcionRegalo(descripcionRegalo)
+
+    const $errores = {
+        nombre: $errorNombre,
+        ciudad: $errorCiudad,
+        'descripcion-regalo': $errorDescripcionRegalo,
+    } 
+    
+    console.log(manejarErrores($errores))
 
     event.preventDefault();
 
 }
 
-function manejarErrores (errores) {
+function manejarErrores ($errores) {
 
+    let llaves = Object.keys($errores);
+    llaves.forEach(function (llave) {
+
+        const $error = $errores[llave];
+        if ($error) {
+
+            $form[llave].className = 'error';
+        }else {
+            $form[llave].className = '';
+        }
+    });
 }
 
 function validarNombre(nombre) {
