@@ -17,25 +17,35 @@ function validarFormulario (event) {
         'descripcion-regalo': $errorDescripcionRegalo,
     } 
     
-    console.log(manejarErrores($errores))
-
+    limpiarErrores($errores);
+    manejarErrores($errores);
     event.preventDefault();
 
 }
 
 function manejarErrores ($errores) {
 
-    let llaves = Object.keys($errores);
-    llaves.forEach(function (llave) {
+    let cantidadErrores = 0;
 
+    let llaves = Object.keys($errores);
+
+    llaves.forEach(function (llave) {
+        
         const $error = $errores[llave];
+        
         if ($error) {
 
+            cantidadErrores++;
             $form[llave].className = 'error';
+
+            enviarErrores($error);
         }else {
             $form[llave].className = '';
         }
     });
+
+
+    return cantidadErrores;
 }
 
 function validarNombre(nombre) {
@@ -85,4 +95,27 @@ function validarDescripcionRegalo(descripcionRegalo) {
 
 
     return '';
+}
+
+function enviarErrores ($error) {
+
+    const $enviarError = document.createElement('li');
+    $enviarError.className = 'errores-enviados'
+    $enviarError.innerText = $error;
+    const $listaErrores = document.querySelector('#errores')
+    $listaErrores.appendChild($enviarError);
+}
+
+function limpiarErrores ($errores) {
+
+    let hayErrores = manejarErrores($errores);
+
+    if (hayErrores >= 0) {
+        
+        let erroresEnviados = document.querySelectorAll('.errores-enviados');
+        for (let i = 0; i < erroresEnviados.length; i++) {
+            erroresEnviados[i].remove();
+        }
+
+    }
 }
