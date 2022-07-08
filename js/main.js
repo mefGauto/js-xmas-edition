@@ -19,8 +19,9 @@ function validarFormulario (event) {
     
     limpiarErrores($errores);
     manejarErrores($errores);
+    comprobarExito($errores);
+    
     event.preventDefault();
-
 }
 
 function manejarErrores ($errores) {
@@ -46,6 +47,45 @@ function manejarErrores ($errores) {
 
 
     return cantidadErrores;
+}
+
+function enviarErrores ($error) {
+
+    const $enviarError = document.createElement('li');
+    $enviarError.className = 'errores-enviados'
+    $enviarError.innerText = $error;
+    const $listaErrores = document.querySelector('#errores')
+    $listaErrores.appendChild($enviarError);
+}
+
+function limpiarErrores ($errores) {
+
+    let hayErrores = manejarErrores($errores);
+
+    if (hayErrores >= 0) {
+        
+        let erroresEnviados = document.querySelectorAll('.errores-enviados');
+        for (let i = 0; i < erroresEnviados.length; i++) {
+            erroresEnviados[i].remove();
+        }
+
+    }
+}
+
+function comprobarExito ($errores) {
+
+    let esExito = manejarErrores($errores) === 0;
+    if (esExito) {
+
+        document.querySelector('#exito').className = '';
+
+        $form.className = 'oculto';
+
+        setTimeout(() => {
+
+            window.location.href = 'wishlist.html';    
+        }, 5000);
+    }
 }
 
 function validarNombre(nombre) {
@@ -95,27 +135,4 @@ function validarDescripcionRegalo(descripcionRegalo) {
 
 
     return '';
-}
-
-function enviarErrores ($error) {
-
-    const $enviarError = document.createElement('li');
-    $enviarError.className = 'errores-enviados'
-    $enviarError.innerText = $error;
-    const $listaErrores = document.querySelector('#errores')
-    $listaErrores.appendChild($enviarError);
-}
-
-function limpiarErrores ($errores) {
-
-    let hayErrores = manejarErrores($errores);
-
-    if (hayErrores >= 0) {
-        
-        let erroresEnviados = document.querySelectorAll('.errores-enviados');
-        for (let i = 0; i < erroresEnviados.length; i++) {
-            erroresEnviados[i].remove();
-        }
-
-    }
 }
